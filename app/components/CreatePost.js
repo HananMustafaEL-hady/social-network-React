@@ -15,6 +15,7 @@ function CreatePost(props) {
         token: JSON.parse(localStorage.getItem("user"))?.token,
       });
       console.log(res.data);
+      props.addFlashMessages("Congrats , you successfuly created a post.");
       props.history.push(`/post/`, [{ id: res.data }]);
     } catch (err) {
       console.log("there was a problem");

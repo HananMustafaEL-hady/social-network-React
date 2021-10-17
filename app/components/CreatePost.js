@@ -3,10 +3,13 @@ import Page from "./Page";
 import axios from "axios";
 import { withRouter } from "react-router";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
+
 function CreatePost(props) {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -14,7 +17,7 @@ function CreatePost(props) {
       const res = await axios.post("/create-post", {
         title,
         body,
-        token: JSON.parse(localStorage.getItem("user"))?.token,
+        token: JSON.parse(appState.user)?.token,
       });
       console.log(res.data);
       appDispatch({

@@ -16,9 +16,9 @@ function HeaderLoggedOut(props) {
       });
       if (res.data) {
         // console.log(res.data);
-        localStorage.setItem("user", JSON.stringify(res.data));
+        // localStorage.setItem("user", JSON.stringify(res.data));
 
-        appDispatch({ type: "login" });
+        appDispatch({ type: "login", data: JSON.stringify(res.data) });
       }
     } catch (err) {
       console.log(err);

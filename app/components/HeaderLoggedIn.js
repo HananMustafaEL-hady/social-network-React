@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
+
 function HeaderLoggedIn(props) {
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
+
   function handleLogout() {
     appDispatch({ type: "logout" });
-    localStorage.removeItem("user");
   }
   return (
     <div className="flex-row my-3 my-md-0">
@@ -16,10 +19,19 @@ function HeaderLoggedIn(props) {
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
-      <Link to="#" className="mr-2">
+      <Link
+        to={{
+          pathname: "/yourProfile",
+          state: {
+            username: JSON.parse(appState.user)?.username,
+          },
+        }}
+        className="mr-2"
+      >
         <img
           className="small-header-avatar"
-          src={JSON.parse(localStorage.getItem("user"))?.avatar}
+          // src={JSON.parse(localStorage.getItem("user"))?.avatar}
+          src={JSON.parse(appState.user)?.avatar}
         />
       </Link>
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">

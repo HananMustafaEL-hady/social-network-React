@@ -1,4 +1,4 @@
-import React, { useState, useReducer, createContext } from "react";
+import React, { useState, useReducer, createContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -16,15 +16,18 @@ import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
+import Profile from "./components/Profile";
 function Main() {
   const initialState = {
     flashMessages: [],
     loggedIn: Boolean(JSON.parse(localStorage.getItem("user"))?.token),
+    user: localStorage.getItem("user"),
   };
   function reducer(draft, action) {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
+        draft.user = action.data;
         break;
       case "logout":
         draft.loggedIn = false;
@@ -37,6 +40,14 @@ function Main() {
   }
 
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("user", state.user);
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [state.loggedIn]);
 
   return (
     <StateContext.Provider value={state}>
@@ -63,6 +74,10 @@ function Main() {
             <Route path="/create-post" exact>
               {" "}
               <CreatePost />{" "}
+            </Route>
+            <Route path="/yourProfile" exact>
+              {" "}
+              <Profile />{" "}
             </Route>
           </Switch>
           <Footer />

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Page from "./Page";
 import axios from "axios";
 import { withRouter } from "react-router";
+import DispatchContext from "../DispatchContext";
 function CreatePost(props) {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
+  const appDispatch = useContext(DispatchContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,8 +17,11 @@ function CreatePost(props) {
         token: JSON.parse(localStorage.getItem("user"))?.token,
       });
       console.log(res.data);
-      props.addFlashMessages("Congrats , you successfuly created a post.");
-      props.history.push(`/post/`, [{ id: res.data }]);
+      appDispatch({
+        type: "flashMessage",
+        value: "Congrats , you successfuly created a post.",
+      });
+      props.history.push(`/post`, [{ id: res.data }]);
     } catch (err) {
       console.log("there was a problem");
     }

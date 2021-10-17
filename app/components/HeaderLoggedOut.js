@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-
+import DispatchContext from "../DispatchContext";
 function HeaderLoggedOut(props) {
+  const appDispatch = useContext(DispatchContext);
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   async function handleSubmit(e) {
@@ -16,7 +18,7 @@ function HeaderLoggedOut(props) {
         // console.log(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
 
-        props.setLoggedIn(true);
+        appDispatch({ type: "login" });
       }
     } catch (err) {
       console.log(err);

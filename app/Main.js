@@ -1,21 +1,33 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:8080";
 //my Components
 import Header from "./components/Header";
 import HomeGuest from "./components/HomeGuest";
+import Home from "./Home";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
+import CreatePost from "./components/CreatePost";
+import ViewSinglePost from "./components/ViewSinglePost";
+
 function Main() {
+  const [loggedIn, setLoggedIn] = useState(
+    Boolean(JSON.parse(localStorage.getItem("user"))?.token)
+  );
+
   return (
     <BrowserRouter>
-      <Header />
+      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Switch>
         <Route path="/" exact>
           {" "}
-          <HomeGuest />{" "}
+          {loggedIn ? <Home /> : <HomeGuest />}{" "}
         </Route>
+        <Route path="/post" component={ViewSinglePost} />
+
         <Route path="/about-us" exact>
           {" "}
           <About />{" "}
@@ -23,6 +35,11 @@ function Main() {
         <Route path="/terms" exact>
           {" "}
           <Terms />{" "}
+        </Route>
+
+        <Route path="/create-post" exact>
+          {" "}
+          <CreatePost />{" "}
         </Route>
       </Switch>
       <Footer />

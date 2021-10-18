@@ -24,7 +24,7 @@ function CreatePost(props) {
         type: "flashMessage",
         value: "Congrats , you successfuly created a post.",
       });
-      props.history.push(`/post`, [{ id: res.data }]);
+      props.history.push(`/post`, { id: res.data });
     } catch (err) {
       console.log("there was a problem");
     }

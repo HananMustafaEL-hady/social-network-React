@@ -5,6 +5,8 @@ import axios from "axios";
 import getDate from "./DateFormatted";
 import { Link } from "react-router-dom";
 import LoadingIcon from "./LoadingIcon";
+import ReactMarkdown from "react-markdown";
+import ReactTooltip from "react-tooltip";
 const ViewSinglePost = (props) => {
   console.log(props.history.location.state?.id);
   const [isLoading, setisLoading] = useState(true);
@@ -41,12 +43,29 @@ const ViewSinglePost = (props) => {
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
         <span className="pt-2">
-          <Link to="" className="text-primary mr-2" title="Edit">
+          <Link
+            to={{
+              pathname: "/post-edit",
+              state: {
+                id: post._id,
+              },
+            }}
+            data-tip="Edit"
+            data-for="edit"
+            className="text-primary mr-2"
+          >
             <i className="fas fa-edit"></i>
           </Link>
-          <Link to="" className="delete-post-button text-danger" title="Delete">
+          <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+          <Link
+            to=""
+            className="delete-post-button text-danger"
+            data-tip="Delete"
+            data-for="delete"
+          >
             <i className="fas fa-trash"></i>
           </Link>
+          <ReactTooltip id="delete" className="custom-tooltip" />
         </span>
       </div>
 
@@ -55,27 +74,42 @@ const ViewSinglePost = (props) => {
           to={{
             pathname: "/yourProfile",
             state: {
-              username: post.author.username,
+              username: post?.author?.username,
             },
           }}
         >
-          <img className="avatar-tiny" src={post.author.avatar} />
+          <img className="avatar-tiny" src={post?.author?.avatar} />
         </Link>
         Posted by{" "}
         <Link
           to={{
             pathname: "/yourProfile",
             state: {
-              username: post.author.username,
+              username: post?.author?.username,
             },
           }}
         >
-          {post.author.username}
+          {post?.author?.username}
         </Link>{" "}
         on {getDate(post.createdDate)}
       </p>
 
-      <div className="body-content">{post.body}</div>
+      <div className="body-content">
+        <ReactMarkdown
+          source={post.body}
+          allowedTypes={[
+            "paragraph",
+            "strong",
+            "emphasis",
+            "text",
+            "heading",
+            "list",
+            "listItem",
+          ]}
+        >
+          {post.body}
+        </ReactMarkdown>
+      </div>
     </Page>
   );
 };

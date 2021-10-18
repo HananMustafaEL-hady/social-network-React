@@ -17,6 +17,7 @@ import FlashMessages from "./components/FlashMessages";
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
 import Profile from "./components/Profile";
+import EditPost from "./components/EditPost";
 function Main() {
   const initialState = {
     flashMessages: [],
@@ -78,6 +79,10 @@ function Main() {
             <Route path="/yourProfile" exact>
               {" "}
               <Profile />{" "}
+            </Route>
+            <Route path="/post-edit" exact>
+              {" "}
+              <EditPost />{" "}
             </Route>
           </Switch>
           <Footer />

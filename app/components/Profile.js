@@ -17,19 +17,28 @@ function Profile() {
   });
 
   useEffect(() => {
+    const outRequest = axios.CancelToken.source();
+
     async function fetchData() {
       try {
-        const res = await axios.post(`/profile/${username}`, {
-          token: JSON.parse(appState.user)?.token,
-        });
+        const res = await axios.post(
+          `/profile/${username}`,
+          {
+            token: JSON.parse(appState.user)?.token,
+          },
+          { cancelToken: outRequest.token }
+        );
         // console.log(res.data);
         setProfileData(res.data);
       } catch (e) {
         console.log(e);
-        console.log("There was a problem");
+        console.log("There was a problem or the request was cancelled");
       }
     }
     fetchData();
+    return () => {
+      outRequest.cancel();
+    };
   }, []);
   return (
     <Page title="Profile">

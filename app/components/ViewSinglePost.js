@@ -10,20 +10,25 @@ const ViewSinglePost = (props) => {
   const [isLoading, setisLoading] = useState(true);
   const [post, setPost] = useState();
   useEffect(() => {
+    const outRequest = axios.CancelToken.source();
     async function fetchPosts() {
       try {
         const res = await axios.get(
-          `/post/${props.history.location.state?.id}`
+          `/post/${props.history.location.state?.id}`,
+          { cancelToken: outRequest.token }
         );
         console.log(res.data);
         setPost(res.data);
         setisLoading(false);
       } catch (err) {
-        console.log("There was a problem");
+        console.log("There was a problem or the request was cancelled");
         console.log(err);
       }
     }
     fetchPosts();
+    return () => {
+      outRequest.cancel();
+    };
   }, []);
   if (isLoading)
     return (
@@ -36,10 +41,10 @@ const ViewSinglePost = (props) => {
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
         <span className="pt-2">
-          <Link href="#" className="text-primary mr-2" title="Edit">
+          <Link to="" className="text-primary mr-2" title="Edit">
             <i className="fas fa-edit"></i>
           </Link>
-          <Link LinklassName="delete-post-button text-danger" title="Delete">
+          <Link to="" className="delete-post-button text-danger" title="Delete">
             <i className="fas fa-trash"></i>
           </Link>
         </span>

@@ -7,6 +7,7 @@ import LoadingIcon from "./LoadingIcon";
 import { useImmerReducer } from "use-immer";
 import StateContext from "../StateContext";
 import DispatchContext from "../DispatchContext";
+import NotFound from "./NotFound";
 
 const EditPost = (props) => {
   //   console.log(props.history.location.state?.id);
@@ -28,6 +29,7 @@ const EditPost = (props) => {
     isSaving: false,
     id: props.history.location.state?.id,
     sendCount: 0,
+    notFound: false,
   };
   function Reducer(draft, action) {
     switch (action.type) {
@@ -73,6 +75,9 @@ const EditPost = (props) => {
           draft.body.hasErrors = false;
         }
         return;
+      case "notFound":
+        draft.notFound = true;
+        return;
     }
   }
   const [state, dispatch] = useImmerReducer(Reducer, originalState);
@@ -90,8 +95,12 @@ const EditPost = (props) => {
         const res = await axios.get(`/post/${state.id}`, {
           cancelToken: outRequest.token,
         });
-        console.log(res.data);
-        dispatch({ type: "fetchComplete", value: res.data });
+        // console.log(res.data);
+        if (res.data) {
+          dispatch({ type: "fetchComplete", value: res.data });
+        } else {
+          dispatch({ type: "notFound" });
+        }
       } catch (err) {
         console.log("There was a problem or the request was cancelled");
         console.log(err);
@@ -135,6 +144,9 @@ const EditPost = (props) => {
       };
     }
   }, [state.sendCount]);
+  if (state.notFound) {
+    return <NotFound />;
+  }
   if (state.isFetching)
     return (
       <Page title="...">

@@ -18,6 +18,7 @@ import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
+import NotFound from "./components/NotFound";
 function Main() {
   const initialState = {
     flashMessages: [],
@@ -84,6 +85,7 @@ function Main() {
               {" "}
               <EditPost />{" "}
             </Route>
+            <Route path="*" component={NotFound} />
           </Switch>
           <Footer />
         </BrowserRouter>

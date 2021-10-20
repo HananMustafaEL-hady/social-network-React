@@ -583,3 +583,18 @@ textarea.tall-textarea {
     opacity: 1;
   }
 }
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.next {
+  background-color: #04aa6d;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.round {
+  border-radius: 20%;
+}

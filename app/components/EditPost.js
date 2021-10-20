@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { withRouter } from "react-router";
 import Page from "./Page";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import LoadingIcon from "./LoadingIcon";
 import { useImmerReducer } from "use-immer";
 import StateContext from "../StateContext";
@@ -40,12 +40,15 @@ const EditPost = (props) => {
         draft.title.value = action.value;
         return;
 
-      case "bodyhange":
+      case "bodyChange":
         draft.body.value = action.value;
         return;
 
       case "submitRequest":
-        draft.sendCount++;
+        if (!draft.title.hasErrors && !draft.body.hasErrors) {
+          draft.sendCount++;
+        }
+
         return;
       case "savedRequestStarted":
         draft.isSaving = true;
@@ -54,11 +57,30 @@ const EditPost = (props) => {
       case "savedRequestFinished":
         draft.isSaving = false;
         return;
+      case "titleRules":
+        if (!action.value.trim()) {
+          draft.title.hasErrors = true;
+          draft.title.message = "You must provide a title";
+        } else {
+          draft.title.hasErrors = false;
+        }
+        return;
+      case "bodyRules":
+        if (!action.value.trim()) {
+          draft.body.hasErrors = true;
+          draft.body.message = "You must provide body content";
+        } else {
+          draft.body.hasErrors = false;
+        }
+        return;
     }
   }
   const [state, dispatch] = useImmerReducer(Reducer, originalState);
   function submitHandler(e) {
     e.preventDefault();
+    dispatch({ type: "titleRules", value: state.title.value });
+    dispatch({ type: "bodyRules", value: state.body.value });
+
     dispatch({ type: "submitRequest" });
   }
   useEffect(() => {
@@ -121,6 +143,15 @@ const EditPost = (props) => {
     );
   return (
     <Page title="Create New Post">
+      <Link
+        to={{
+          pathname: "/post",
+          state: { id: state.id },
+        }}
+        className="btn next round"
+      >
+        &#8249;{" "}
+      </Link>
       <form onSubmit={submitHandler}>
         <div className="form-group">
           <label htmlFor="post-title" className="text-muted mb-1">
@@ -138,7 +169,16 @@ const EditPost = (props) => {
             onChange={(e) =>
               dispatch({ type: "titleChange", value: e.target.value })
             }
+            onBlur={(e) =>
+              dispatch({ type: "titleRules", value: e.target.value })
+            }
           />
+
+          {state.title.hasErrors && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.title.message}{" "}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -154,7 +194,15 @@ const EditPost = (props) => {
             onChange={(e) =>
               dispatch({ type: "bodyChange", value: e.target.value })
             }
+            onBlur={(e) =>
+              dispatch({ type: "bodyRules", value: e.target.value })
+            }
           ></textarea>
+          {state.body.hasErrors && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.body.message}{" "}
+            </div>
+          )}
         </div>
 
         <button className="btn btn-primary" disabled={state.isSaving}>

@@ -25,7 +25,7 @@ const ProfilePosts = (props) => {
     return () => {
       outRequest.cancel();
     };
-  }, []);
+  }, [props.username]);
   if (isLoading) return <LoadingIcon />;
 
   return (

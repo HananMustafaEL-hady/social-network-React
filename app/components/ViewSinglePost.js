@@ -66,7 +66,7 @@ const ViewSinglePost = (props) => {
             type: "flashMessage",
             value: "Post was successfully deleted.",
           });
-          props.history.push("/yourProfile", {
+          props.history.push("/profile", {
             username: JSON.parse(appState.user)?.username,
           });
         }
@@ -113,7 +113,7 @@ const ViewSinglePost = (props) => {
       <p className="text-muted small mb-4">
         <Link
           to={{
-            pathname: "/yourProfile",
+            pathname: "/profile",
             state: {
               username: post?.author?.username,
             },
@@ -124,7 +124,7 @@ const ViewSinglePost = (props) => {
         Posted by{" "}
         <Link
           to={{
-            pathname: "/yourProfile",
+            pathname: "/profile",
             state: {
               username: post?.author?.username,
             },

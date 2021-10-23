@@ -88,7 +88,15 @@ function Main() {
               {" "}
               <CreatePost />{" "}
             </Route>
-            <Route path="/yourProfile" exact>
+            <Route path="/profile" exact>
+              {" "}
+              <Profile />{" "}
+            </Route>
+            <Route path="/profile/followers" exact>
+              {" "}
+              <Profile />{" "}
+            </Route>
+            <Route path="/profile/following" exact>
               {" "}
               <Profile />{" "}
             </Route>

@@ -39,7 +39,7 @@ function HeaderLoggedIn(props) {
       <ReactTooltip place="bottom" id="chat" className="custom-tooltip" />{" "}
       <Link
         to={{
-          pathname: "/yourProfile",
+          pathname: "/profile",
           state: {
             username: JSON.parse(appState.user)?.username,
           },

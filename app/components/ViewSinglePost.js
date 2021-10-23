@@ -37,7 +37,7 @@ const ViewSinglePost = (props) => {
     return () => {
       outRequest.cancel();
     };
-  }, []);
+  }, [id]);
   if (isLoading)
     return (
       <Page title="...">

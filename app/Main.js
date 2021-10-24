@@ -21,12 +21,14 @@ import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
 import NotFound from "./components/NotFound";
 import Search from "./components/Search";
+import Chat from "./components/Chat";
 function Main() {
   const initialState = {
     flashMessages: [],
     loggedIn: Boolean(JSON.parse(localStorage.getItem("user"))?.token),
     user: localStorage.getItem("user"),
     isSearchOpen: false,
+    isChatOpen: false,
   };
   function reducer(draft, action) {
     switch (action.type) {
@@ -48,6 +50,12 @@ function Main() {
 
       case "closeSearch":
         draft.isSearchOpen = false;
+        break;
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen;
+        break;
+      case "closeChat":
+        draft.isChatOpen = false;
         break;
     }
   }
@@ -114,6 +122,7 @@ function Main() {
           >
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

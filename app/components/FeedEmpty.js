@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
-
+import React, { Fragment, useContext } from "react";
+import StateContext from "../StateContext";
 const FeedEmpty = () => {
+  const appState = useContext(StateContext);
   return (
     <Fragment>
       <h2 className="text-center">

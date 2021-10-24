@@ -1,12 +1,8 @@
-import React, { useContext } from "react";
-import Page from "./components/Page";
-import StateContext from "../app/StateContext";
+import React, { Fragment } from "react";
 
-function Home() {
-  const appState = useContext(StateContext);
-
+const FeedEmpty = () => {
   return (
-    <Page title="Your Feed">
+    <Fragment>
       <h2 className="text-center">
         Hello <strong>{JSON.parse(appState.user)?.username}</strong>, your feed
         is empty.
@@ -17,8 +13,8 @@ function Home() {
         the &ldquo;Search&rdquo; feature in the top menu bar to find content
         written by people with similar interests and then follow them.
       </p>
-    </Page>
+    </Fragment>
   );
-}
+};
 
-export default Home;
+export default FeedEmpty;

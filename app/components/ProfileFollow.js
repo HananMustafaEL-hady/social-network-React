@@ -28,7 +28,7 @@ const ProfileFollow = (props) => {
     return () => {
       outRequest.cancel();
     };
-  }, [props.username]);
+  }, [props.username, props.action]);
   if (isLoading) return <LoadingIcon />;
 
   return (

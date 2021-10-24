@@ -4,6 +4,7 @@ import { useImmer } from "use-immer";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import getDate from "./DateFormatted";
+import Post from "./Post";
 
 const Search = () => {
   const appDispatch = useContext(DispatchContext);
@@ -121,21 +122,11 @@ const Search = () => {
                 </div>
                 {state.results?.map((post) => {
                   return (
-                    <Link
-                      onClick={() => appDispatch({ type: "closeSearch" })}
+                    <Post
+                      post={post}
                       key={post._id}
-                      to={{
-                        pathname: "/post",
-                        state: { id: post._id },
-                      }}
-                      className="list-group-item list-group-item-action"
-                    >
-                      <img className="avatar-tiny" src={post.author.avatar} />{" "}
-                      <strong>{post.title}</strong>{" "}
-                      <span className="text-muted small">
-                        by {post.author.username} on {getDate(post.createdDate)}{" "}
-                      </span>
-                    </Link>
+                      onClick={() => appDispatch({ type: "closeSearch" })}
+                    />
                   );
                 })}
               </div>

@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import getDate from "./DateFormatted";
+import Post from "./Post";
 import LoadingIcon from "./LoadingIcon";
 const ProfilePosts = (props) => {
   const [isLoading, setisLoading] = useState(true);
@@ -31,22 +30,7 @@ const ProfilePosts = (props) => {
   return (
     <div className="list-group">
       {posts?.map((post) => {
-        return (
-          <Link
-            key={post._id}
-            to={{
-              pathname: "/post",
-              state: { id: post._id },
-            }}
-            className="list-group-item list-group-item-action"
-          >
-            <img className="avatar-tiny" src={post.author.avatar} />{" "}
-            <strong>{post.title}</strong>{" "}
-            <span className="text-muted small">
-              on {getDate(post.createdDate)}{" "}
-            </span>
-          </Link>
-        );
+        return <Post noAuthor={true} post={post} key={post._id} />;
       })}
     </div>
   );

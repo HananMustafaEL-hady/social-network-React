@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL =
+  process.env.BACKENDURL || "https://myappreact12.herokuapp.com";
 import { CSSTransition } from "react-transition-group";
 //my Components
 import Header from "./components/Header";

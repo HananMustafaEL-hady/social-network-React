@@ -4,8 +4,8 @@ import DispatchContext from "../DispatchContext";
 import { Link } from "react-router-dom";
 import { useImmer } from "use-immer";
 import io from "socket.io-client";
-const socket = io("http://localhost:8080");
 const Chat = () => {
+  const socket = useRef(null);
   const appState = useContext(StateContext);
   const appDispatch = useContext(DispatchContext);
   const chatField = useRef(null);
@@ -35,7 +35,7 @@ const Chat = () => {
     e.preventDefault();
     //send message to chat server
 
-    socket.emit("chatFromBrowser", {
+    socket.current.emit("chatFromBrowser", {
       message: state.fieldValue,
       token: user.token,
     });
@@ -52,11 +52,13 @@ const Chat = () => {
   }
 
   useEffect(() => {
-    socket.on("chatFromServer", (message) => {
+    socket.current = io("http://localhost:8080");
+    socket.current.on("chatFromServer", (message) => {
       setState((draft) => {
         draft.chatMessages.push(message);
       });
     });
+    return () => socket.current.disconnect();
   }, []);
   useEffect(() => {
     chatLog.current.scrollTop = chatLog.current.scrollHeight;
